@@ -6,8 +6,11 @@
 (require 'init-ui)
 (require 'init-editing)
 (require 'init-company-mode)
+(require 'init-rust)
+(require 'init-go)
 
 (provide 'init)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -15,7 +18,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (rainbow-delimiters web-mode rebecca-theme prettier-js golden-ratio go-mode flycheck-rust exec-path-from-shell deferred company cmake-mode cargo ample-theme add-node-modules-path))))
+    (rainbow-mode company-go web-mode rebecca-theme rainbow-delimiters racer prettier-js golden-ratio go-mode flycheck-rust exec-path-from-shell deferred company cmake-mode cargo ample-theme add-node-modules-path))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
