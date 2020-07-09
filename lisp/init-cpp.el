@@ -1,3 +1,8 @@
+;; This file handles setting up rtags and its keybindings. An astute
+;; observer might notice that you'll need to have rtags installed and
+;; running / setup on your dir for this to work. They'd be
+;; right. You'll need to do that :)
+
 (require 'init-elpa)
 
 (require-package 'rtags)
