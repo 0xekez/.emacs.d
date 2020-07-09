@@ -7,7 +7,8 @@
 (require 'init-editing)
 (require 'init-company-mode)
 (require 'init-rust)
-(require 'init-go)
+(require 'init-cpp)
+(require 'init-sfox)
 
 (provide 'init)
 
