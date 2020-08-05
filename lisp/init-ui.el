@@ -17,7 +17,9 @@
 
 (load-theme 'rebecca t)
 
-(blink-cursor-mode 0)
+;; Set to 0 to disable blinking. I like blinking because it draws more
+;; attention to the cursor.
+(blink-cursor-mode t)
 (setq-default cursor-type 'bar)
 (setq ring-bell-function 'ignore)
 

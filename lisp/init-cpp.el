@@ -6,15 +6,22 @@
 (require 'init-elpa)
 
 (require-package 'rtags)
+(require-package 'company-rtags)
 
 (require 'rtags)
-; (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
-; (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
- 
-;(setq rtags-completions-enabled t
-;      rtags-path "~/.emacs.d/lisp/rtags/src/rtags.el"
-;      rtags-rc-binary-name "~/.emacs.d/lisp/rtags/bin/rc"
-;      rtags-rdm-binary-name "~/.emacs.d/lisp/rtags/bin/rdm")
+(require 'company-rtags)
+
+;; Indents C switch statments in a sane manner.
+(c-set-offset 'case-label '+)
+(c-set-offset 'inlambda 0)
+
+;; (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
+;; (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
+
+;;(setq rtags-completions-enabled t
+;;      rtags-path "~/.emacs.d/lisp/rtags/src/rtags.el"
+;;      rtags-rc-binary-name "~/.emacs.d/lisp/rtags/bin/rc"
+;;      rtags-rdm-binary-name "~/.emacs.d/lisp/rtags/bin/rdm")
 
 ;; only run this if rtags is installed
 (when (require 'rtags nil :noerror)

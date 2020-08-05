@@ -1,10 +1,14 @@
 (require 'init-elpa)
 (require 'saveplace)
+(require 'hi-lock)
 (require-package 'rainbow-delimiters)
 (require-package 'flycheck)
+(require-package 'fzf)
 
 ;; Highlights matching parenthesis
-(show-paren-mode 1)
+(show-paren-mode t)
+(setq-default show-trailing-whitespace t)
+(electric-pair-mode 1)
 
 ;; No need for ~ files when editing
 (setq create-lockfiles nil)
@@ -45,6 +49,20 @@
 (global-set-key (kbd "C-c C-x") #'toggle-comment-on-line)
 
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+
+;; M-s h . - highlights the symbol at the cursor.
+;; M-s h , - removes highlight from symbol at the cursor.
+(defun unhighlight-symbol-at-point ()
+  "Remove highlight of symbol at point."
+  (interactive)
+  (unhighlight-regexp (concat "\\_<" (thing-at-point 'symbol) "\\_>")))
+(define-key search-map "h," 'unhighlight-symbol-at-point)
+
+(which-func-mode)
+
+;; TODO(zeke): move this into an org file if we start making more
+;; customizations.
+(global-set-key (kbd "C-c l") 'org-store-link)
 
 (provide 'init-editing)
 ;;; init-editing.el ends here
