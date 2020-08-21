@@ -1,8 +1,18 @@
 (require 'init-elpa)
 (require-package 'rebecca-theme)
-(require-package 'golden-ratio)
+(require-package 'zoom)
+;; (require-package 'golden-ratio)
 
-(require 'golden-ratio)
+;; (require 'golden-ratio)
+(require 'zoom)
+(zoom-mode t)
+;; (defun size-callback ()
+;;   (cond ((< (frame-pixel-width) ) '(90 . 0.618))
+;;         (t                        '(0.618 . 0.618))))
+(setq zoom-size '(90 . 0.618))
+;; (custom-set-variables
+;;  '(zoom-size 'size-callback))
+;;(setq zoom-size 'size-callback)
 
 (setq inhibit-startup-message t)
 (menu-bar-mode -1)
@@ -23,8 +33,8 @@
 (setq-default cursor-type 'bar)
 (setq ring-bell-function 'ignore)
 
-(golden-ratio-mode 1)
-(setq golden-ratio-auto-scale t)
+(golden-ratio-mode nil)
+;; (setq golden-ratio-auto-scale t)
 
 (line-number-mode 1)
 (column-number-mode 1)

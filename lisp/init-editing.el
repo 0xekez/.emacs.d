@@ -58,11 +58,58 @@
   (unhighlight-regexp (concat "\\_<" (thing-at-point 'symbol) "\\_>")))
 (define-key search-map "h," 'unhighlight-symbol-at-point)
 
+;; Shows the current function in the modeline.
 (which-func-mode)
 
 ;; TODO(zeke): move this into an org file if we start making more
-;; customizations.
+;; customizations. C-c C-l pastes links in the org file.
 (global-set-key (kbd "C-c l") 'org-store-link)
+
+;; These match the mozilla defaults.
+(setq tab-width 8
+      indent-tabs-mode nil
+      c-basic-offset 2)
+
+;; Better colors for diff mode because imho the default ones are a
+;; little hard to look at.
+(defun update-diff-colors ()
+  "update the colors for diff faces"
+  (set-face-attribute 'diff-added nil
+                      :foreground "white" :background "#47611A")
+  (set-face-attribute 'diff-removed nil
+                      :foreground "white" :background "#9C0D38")
+  (set-face-attribute 'diff-changed nil
+                      :foreground "white" :background "#E89005"))
+(eval-after-load "diff-mode"
+  '(update-diff-colors))
+
+;; From <https://emacs.stackexchange.com/questions/24459/revert-all-open-buffers-and-ignore-errors>
+(defun zeke/revert-all-file-buffers ()
+  "Refresh all open file buffers without confirmation.
+Buffers in modified (not yet saved) state in emacs will not be reverted. They
+will be reverted though if they were modified outside emacs.
+Buffers visiting files which do not exist any more or are no longer readable
+will be killed."
+  (interactive)
+  (dolist (buf (buffer-list))
+    (let ((filename (buffer-file-name buf)))
+      ;; Revert only buffers containing files, which are not modified;
+      ;; do not try to revert non-file buffers like *Messages*.
+      (when (and filename
+                 (not (buffer-modified-p buf)))
+        (if (file-readable-p filename)
+            ;; If the file exists and is readable, revert the buffer.
+            (with-current-buffer buf
+              (revert-buffer :ignore-auto :noconfirm :preserve-modes))
+          ;; Otherwise, kill the buffer.
+          (let (kill-buffer-query-functions) ; No query done when killing buffer
+            (kill-buffer buf)
+            (message "Killed non-existing/unreadable file buffer: %s" filename))))))
+  (message "Finished reverting buffers containing unmodified files."))
+(zeke/revert-all-file-buffers)
+
+;; move between visible buffers with S-<up>/<down>/<left>/<right>
+(windmove-default-keybindings)
 
 (provide 'init-editing)
 ;;; init-editing.el ends here

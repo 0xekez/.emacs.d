@@ -19,7 +19,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (fzf rainbow-mode company-go web-mode rebecca-theme rainbow-delimiters racer prettier-js golden-ratio go-mode flycheck-rust exec-path-from-shell deferred company cmake-mode cargo ample-theme add-node-modules-path)))
+    (zoom fzf rainbow-mode company-go web-mode rebecca-theme rainbow-delimiters racer prettier-js golden-ratio go-mode flycheck-rust exec-path-from-shell deferred company cmake-mode cargo ample-theme add-node-modules-path)))
  '(safe-local-variable-values (quote ((MODE1350 . C++)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
