@@ -8,6 +8,10 @@
 ;; Highlights matching parenthesis
 (show-paren-mode t)
 (setq-default show-trailing-whitespace t)
+;; Show trailing whitespace eveywhere except in shell mode where the
+;; shell will occasionally show garbage we don't care about.
+(add-hook 'shell-mode-hook (lambda ()
+			     show-trailing-whitespace nil))
 (electric-pair-mode 1)
 
 ;; No need for ~ files when editing
@@ -110,6 +114,13 @@ will be killed."
 
 ;; move between visible buffers with S-<up>/<down>/<left>/<right>
 (windmove-default-keybindings)
+
+(autoload 'jflex-mode "jflex-mode" nil t)
+(setq auto-mode-alist (cons '("\\(\\.flex\\|\\.jflex\\)\\'" . jflex-mode) auto-mode-alist))
+
+(autoload 'cup-mode "cup-mode" nil t)
+(setq auto-mode-alist (cons '("\\(\\.cup\\)\\'" . cup-mode) auto-mode-alist))
+
 
 (provide 'init-editing)
 ;;; init-editing.el ends here
