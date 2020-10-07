@@ -6,15 +6,12 @@
 ;; (require 'golden-ratio)
 (require 'zoom)
 (zoom-mode t)
-;; (defun size-callback ()
-;;   (cond ((< (frame-pixel-width) ) '(90 . 0.618))
-;;         (t                        '(0.618 . 0.618))))
-(setq zoom-size '(90 . 0.618))
-;; (custom-set-variables
-;;  '(zoom-size 'size-callback))
-;;(setq zoom-size 'size-callback)
 
-(setq inhibit-startup-message t)
+(custom-set-variables
+ ;; two thirds of golden ratio and golden ratio.
+ '(zoom-size '(0.412 . 0.618)))
+
+(setq inhibit-startup-message nil)
 (menu-bar-mode -1)
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
@@ -32,9 +29,6 @@
 (blink-cursor-mode t)
 (setq-default cursor-type 'bar)
 (setq ring-bell-function 'ignore)
-
-(golden-ratio-mode nil)
-;; (setq golden-ratio-auto-scale t)
 
 (line-number-mode 1)
 (column-number-mode 1)

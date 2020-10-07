@@ -1,9 +1,20 @@
 (require 'init-elpa)
 (require 'saveplace)
 (require 'hi-lock)
+(require 'desktop)
+
 (require-package 'rainbow-delimiters)
 (require-package 'flycheck)
 (require-package 'fzf)
+
+;; Save the desktop state on Emacs death.
+
+;; !!WARNING!! I like having the behavior that when emacs is launched
+;; it does not by default open it last saved session so I have
+;; modified the desktop-save-mode definition to prevent that by
+;; removing desktop-load from the after-init-hook. This will not
+;; happen by default if you are using this file.
+(desktop-save-mode 1)
 
 ;; Highlights matching parenthesis
 (show-paren-mode t)

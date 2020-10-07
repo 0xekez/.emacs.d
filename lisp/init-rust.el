@@ -1,83 +1,45 @@
-;; (require 'init-elpa)
-;; (require 'subr-x)
-;; (require-package 'company)
-;; (require-package 'racer)
-;; (require-package 'rust-mode)
-;; (require-package 'flycheck-rust)
+;; This rust setup uses rust analyzer as a backend and is riciculously
+;; powerful.
 
-;; (require 'company)
-;; (require 'racer)
-;; (require 'rust-mode)
+(require-package 'lsp-mode)
+(require-package 'lsp-ui)
+(require-package 'rust-mode)
+(require-package 'yasnippet-snippets)
 
-;; (add-hook 'rust-mode-hook 'racer-mode)
-;; (add-hook 'racer-mode-hook 'eldoc-mode)
-;; (add-hook 'racer-mode-hook 'company-mode)
+;; s-l g g - goto definition
+;; s-l f r - goto reference
+;; s-l a a - execute code action
+;; s-l r r - rename symbol at point
+(add-hook 'rust-mode-hook 'lsp)
+(setq lsp-rust-server 'rust-analyzer)
 
-;; (require 'rust-mode)
-;; (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
-;; (setq company-tooltip-align-annotations t)
-
-
-;; ;; Use spaces instead of tabs and prevent company from trying to
-;; ;; autocomplete in the background. For large rust projects this
-;; ;; autocompletion will cause emacs to become unresponsive. Company
-;; ;; will still autocomplete when you press tab.
-;; (add-hook 'rust-mode-hook
-;;           (lambda () (setq indent-tabs-mode nil
-;; 			   company-idle-delay nil)))
-;; ;; C-c C-c C-r - run
-;; ;; C-c C-c C-b - build
-;; ;; C-c C-c C-t - test
-;; (add-hook 'rust-mode-hook 'cargo-minor-mode)
-
-;; (add-hook 'flycheck-mode-hook 'flycheck-rust-setup)
-
-;; ;; Format buffer on save
-;; ;; (add-hook 'rust-mode-hook
-;; ;;           (lambda ()
-;; ;;             (add-hook 'before-save-hook  'rust-format-buffer)))
-
-;; Rust settings
-;; (require 'rust-mode)
-;; (with-eval-after-load 'rust-mode
-;; ;; Rust Formatter. Run rustfmt before saving rust buffers
-;; (setq rust-format-on-save t))
-
-;; (require 'lsp-mode) ;; language server protocol
-;; (with-eval-after-load 'lsp-mode
-;; (add-hook 'rust-mode-hook #'lsp))
-;; ;; (add-hook 'rust-mode-hook #'flycheck-mode))
-
-;; ;; Excessive UI feedback for light reading between coding
-;; (require 'lsp-ui)
-;; (with-eval-after-load 'lsp-ui
-;; (add-hook 'lsp-mode-hook 'lsp-ui-mode))
-
-;; ;; autocompletions for lsp (available with melpa enabled)
-;; (require 'company-lsp)
-;; (push 'company-lsp company-backends)
-
-;; ;; tell company to complete on tabs instead of sitting there like a moron
-;; (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
-
-(add-hook 'rust-mode-hook 'racer-mode)
-(add-hook 'racer-mode-hook 'eldoc-mode)
-(add-hook 'racer-mode-hook 'company-mode)
-(setq racer-rust-src-path "~/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src/")
-
-(require 'rust-mode)
-(define-key rust-mode-map (kbd "TAB") 'company-indent-or-complete-common)
-(setq company-tooltip-align-annotations t)
-(setq rust-format-on-save t)
+(setq company-minimum-prefix-length 3
+      company-idle-delay 0.1) ;; default is 0.2
 
 ;; C-c C-c C-r - run
 ;; C-c C-c C-b - build
 ;; C-c C-c C-t - test
 (add-hook 'rust-mode-hook 'cargo-minor-mode)
+;; run this to let lsp expand snippets.
+(yas-global-mode)
 
-;; Flycheck isn't working for me with more complex rust setups
-;; (i.e. blog_os)
-;; (add-hook 'flycheck-mode-hook 'flycheck-rust-setup)
-;; (add-hook 'rust-mode-hook 'flycheck-mode)
+(setq lsp-ui-sideline-show-hover nil)
+(setq lsp-auto-configure t)
+;; Stop popup boxes at point
+(setq lsp-ui-doc-enable nil)
+(global-set-key (kbd "s-.") 'lsp-ui-doc-show)
+(global-set-key (kbd "s-,") 'lsp-ui-doc-hide)
+;; flycheck makes my want to kms myself
+(setq lsp-diagnostic-package :none)
+
+(add-hook 'before-save-hook (lambda () (when (eq 'rust-mode major-mode)
+                                         (rust-format-buffer))))
+
+
+(defface lsp-ui-sideline-code-action
+  '((default :foreground "#afafff")
+    (((background light)) :foreground "#afafff"))
+  "Face used to highlight code action text."
+  :group 'lsp-ui-sideline)
 
 (provide 'init-rust)

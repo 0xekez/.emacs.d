@@ -7,4 +7,7 @@
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
 
+;; Set the source dir for emacs code
+(setq source-directory "~/.emacs.d/emacs/")
+
 (provide 'init-exec-path)
