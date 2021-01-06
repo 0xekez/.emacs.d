@@ -22,6 +22,8 @@
 (global-set-key [mouse-5] 'scroll-up-line)
 (xterm-mouse-mode 1)
 
+;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+;; (load-theme 'solo-jazz t)
 (load-theme 'rebecca t)
 
 ;; Set to 0 to disable blinking. I like blinking because it draws more
@@ -50,4 +52,9 @@
         (-3 . "%p")
         "-%-"))
 
+(current-column)
+(line-number-at-pos)
+
 (provide 'init-ui)
+
+

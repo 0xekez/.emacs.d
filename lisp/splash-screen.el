@@ -117,11 +117,11 @@
 
 	  ;; Restore session to resume the desktop state of the last
 	  ;; emacs session optionally.
-	  (insert-text-button " [Recover session] "
-	  		      'action (lambda (_) (call-interactively 'desktop-read) (setq inhibit-splash-screen t))
-	  		      'help-echo "Recover previous emacs session"
-	  		      'face 'warning
-	  		      'follow-link t)
+	  ;; (insert-text-button " [Recover session] "
+	  ;; 		      'action (lambda (_) (call-interactively 'desktop-read) (setq inhibit-splash-screen t))
+	  ;; 		      'help-echo "Recover previous emacs session"
+	  ;; 		      'face 'warning
+	  ;; 		      'follow-link t)
 	  (center-line) (insert "\n") (insert "\n")
           ;; Copyright text
           (insert (propertize

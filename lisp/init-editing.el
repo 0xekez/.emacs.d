@@ -9,16 +9,19 @@
 
 ;; Save the desktop state on Emacs death.
 
-;; !!WARNING!! I like having the behavior that when emacs is launched
-;; it does not by default open it last saved session so I have
-;; modified the desktop-save-mode definition to prevent that by
-;; removing desktop-load from the after-init-hook. This will not
-;; happen by default if you are using this file.
-(desktop-save-mode 1)
-
 ;; Highlights matching parenthesis
 (show-paren-mode t)
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+
+;; Enable emojis
+(if (version< "27.0" emacs-version)
+    (set-fontset-font
+     "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
+  (set-fontset-font
+   t 'symbol (font-spec :family "Apple Color Emoji") nil 'prepend))
+
 (setq-default show-trailing-whitespace t)
+(add-hook 'after-save-hook 'delete-trailing-whitespace)
 ;; Show trailing whitespace eveywhere except in shell mode where the
 ;; shell will occasionally show garbage we don't care about.
 (add-hook 'shell-mode-hook (lambda ()
@@ -28,19 +31,7 @@
 ;; No need for ~ files when editing
 (setq create-lockfiles nil)
 
-;; Interactive search key bindings. By default, C-s runs
-;; isearch-forward, so this swaps the bindings.
-;; I actually prefer to have these disabled because more often than I
-;; want a regex search I want to search for some sort of rust or C++
-;; pointer.
-;; (global-set-key (kbd "C-s") 'isearch-forward-regexp)
-;; (global-set-key (kbd "C-r") 'isearch-backward-regexp)
-;; (global-set-key (kbd "C-M-s") 'isearch-forward)
-;; (global-set-key (kbd "C-M-r") 'isearch-backward)
-
 (define-key global-map (kbd "RET") 'newline-and-indent)
-
-;; (add-hook 'after-init-hook #'global-flycheck-mode)
 
 ;; When you visit a file, point goes to the last place where it
 ;; was when you previously visited the same file.
@@ -63,7 +54,6 @@
   (comment-or-uncomment-region (line-beginning-position) (line-end-position)))
 (global-set-key (kbd "C-c C-x") #'toggle-comment-on-line)
 
-(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 ;; M-s h . - highlights the symbol at the cursor.
 ;; M-s h , - removes highlight from symbol at the cursor.

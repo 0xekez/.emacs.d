@@ -10,8 +10,8 @@
 ;; s-l f r - goto reference
 ;; s-l a a - execute code action
 ;; s-l r r - rename symbol at point
-(add-hook 'rust-mode-hook 'lsp)
 (setq lsp-rust-server 'rust-analyzer)
+(add-hook 'rust-mode-hook 'lsp)
 
 (setq company-minimum-prefix-length 3
       company-idle-delay 0.1) ;; default is 0.2

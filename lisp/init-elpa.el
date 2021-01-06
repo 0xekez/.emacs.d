@@ -9,6 +9,8 @@
 	(package-refresh-contents))
       (package-install package))))
 
+(require-package 'use-package)
+
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives

@@ -5,41 +5,17 @@
 
 (require 'init-elpa)
 
-;; (require-package 'rtags)
-;; (require-package 'company-rtags)
-
-;; (require 'rtags)
-;; (require 'company-rtags)
-
 ;; Indents C switch statments in a sane manner.
 (c-set-offset 'case-label '+)
 (c-set-offset 'inlambda 0)
+(add-hook 'c-mode-common-hook
+          (lambda () (define-key c-mode-base-map (kbd "C-c l") 'compile)))
 
-;; (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
-;; (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
+(setq company-backends (delete 'company-clang company-backends))
 
-;;(setq rtags-completions-enabled t
-;;      rtags-path "~/.emacs.d/lisp/rtags/src/rtags.el"
-;;      rtags-rc-binary-name "~/.emacs.d/lisp/rtags/bin/rc"
-;;      rtags-rdm-binary-name "~/.emacs.d/lisp/rtags/bin/rdm")
+(require-package 'company-ctags)
 
-;; only run this if rtags is installed
-;; (when (require 'rtags nil :noerror)
-;;   ;; make sure you have company-mode installed
-;;   (require 'company)
-;;   (define-key c-mode-base-map (kbd "M-.")
-;;     (function rtags-find-symbol-at-point))
-;;   (define-key c-mode-base-map (kbd "M-,")
-;;     (function rtags-find-references-at-point))
-;;   ;; install standard rtags keybindings. Do M-. on the symbol below to
-;;   ;; jump to definition and see the keybindings.
-;;   (rtags-enable-standard-keybindings)
-;;   ;; company completion setup
-;;   (setq rtags-autostart-diagnostics t)
-;;   (rtags-diagnostics)
-;;   (setq rtags-completions-enabled t)
-;;   (push 'company-rtags company-backends)
-;;   (global-company-mode)
-;;   (define-key c-mode-base-map (kbd "<C-tab>") (function company-complete)))
+(with-eval-after-load 'company
+  (company-ctags-auto-setup))
 
 (provide 'init-cpp)
