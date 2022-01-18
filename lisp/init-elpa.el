@@ -11,11 +11,10 @@
 
 (require-package 'use-package)
 
-(add-to-list 'package-archives
-	     '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives
-	     '("gnu" . "https://elpa.gnu.org/packages/"))
-;; Use Melpa and GNU packages
+(setq package-archives
+   '(("melpa" . "http://melpa.org/packages/")
+     ("melpa-stable" . "https://stable.melpa.org/packages/")
+     ("gnu" . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
 

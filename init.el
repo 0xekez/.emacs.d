@@ -13,15 +13,14 @@
 (require 'init-rust)
 (require 'init-go)
 (require 'init-cpp)
-(require 'init-sfox)
-(require 'init-python)
-(require 'init-java)
+(require 'init-tide)
 
 (provide 'init)
 
 ;; Try and make emacs faster:
 (setq gc-cons-threshold 100000000)
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
+(setq native-comp-async-report-warnings-errors nil)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -37,7 +36,7 @@
  '(nrepl-message-colors
    '("#00afef" "#778ca3" "#009c9f" "#778ca3" "#005cc5" "#fa1090" "#009c9f" "#778ca3"))
  '(package-selected-packages
-   '(company-ctags websocket magit lsp-javacomp lsp-pyls lsp-python-ms lsp-java company-go use-package yasnippet-snippets yasnippet yasnippit company-racer lsp-ui lsp-mode racer vagrant vagrant-tramp zoom fzf rainbow-mode web-mode rebecca-theme rainbow-delimiters prettier-js golden-ratio go-mode flycheck-rust exec-path-from-shell deferred cmake-mode cargo ample-theme add-node-modules-path))
+   '(prettier lsp-dart cargo-mode tide typescript-mode pug-mode yaml-mode lsp cider clojure-mode slime company-ctags websocket magit lsp-javacomp lsp-pyls lsp-python-ms lsp-java company-go use-package yasnippet-snippets yasnippet yasnippit company-racer lsp-ui lsp-mode racer vagrant vagrant-tramp zoom fzf rainbow-mode web-mode rebecca-theme rainbow-delimiters prettier-js golden-ratio go-mode flycheck-rust exec-path-from-shell deferred cmake-mode cargo ample-theme add-node-modules-path))
  '(pdf-view-midnight-colors '("#778ca3" . "#eaeafa"))
  '(safe-local-variable-values '((MODE1350 . C++)))
  '(send-mail-function 'mailclient-send-it)

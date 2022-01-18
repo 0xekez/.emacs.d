@@ -13,9 +13,6 @@
 (setq lsp-rust-server 'rust-analyzer)
 (add-hook 'rust-mode-hook 'lsp)
 
-(setq company-minimum-prefix-length 3
-      company-idle-delay 0.1) ;; default is 0.2
-
 ;; C-c C-c C-r - run
 ;; C-c C-c C-b - build
 ;; C-c C-c C-t - test
@@ -23,8 +20,12 @@
 ;; run this to let lsp expand snippets.
 (yas-global-mode)
 
+;; https://github.com/emacs-lsp/lsp-mode/issues/2525#issuecomment-911757059
+(remove-hook 'lsp-configure-hook 'lsp-headerline-breadcrumb-mode)
+
 (setq lsp-ui-sideline-show-hover nil)
 (setq lsp-auto-configure t)
+(setq lsp-headerline-breadcrumb-enable nil)
 ;; Stop popup boxes at point
 (setq lsp-ui-doc-enable nil)
 (global-set-key (kbd "s-.") 'lsp-ui-doc-show)
