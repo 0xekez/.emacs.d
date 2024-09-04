@@ -1,70 +1,92 @@
-;; Load files from the lisp directory.
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+;; Visual settings
+(setq-default cursor-type 'bar
+              show-trailing-whitespace t
+              mode-line-format '((:eval (format " %s" (buffer-name)))))
 
-(require 'init-elpa)
-(require 'init-exec-path)
-(require 'init-ui)
-(require 'splash-screen)
-(require 'init-hack)
-(require 'init-ido)
-(require 'init-editing)
-(require 'init-company-mode)
+(setq create-lockfiles nil
+      ring-bell-function 'ignore
+      visible-bell t
+      inhibit-startup-message t
+      initial-scratch-message nil
+      initial-major-mode 'fundamental-mode
+      inhibit-startup-buffer-menu t)
 
-(require 'init-rust)
-(require 'init-go)
-(require 'init-cpp)
-(require 'init-tide)
+(windmove-default-keybindings)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(pixel-scroll-precision-mode)
+(electric-indent-mode -1)
+
+;; Remove trailing whitespaces on save
+(add-hook 'after-save-hook 'delete-trailing-whitespace)
+
+;; Package management
+(require 'package)
+(add-to-list 'package-archives '("gnu"   . "https://elpa.gnu.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(eval-and-compile
+  (setq use-package-always-ensure t))
+
+(use-package lsp-mode
+  :hook ((typescript-mode . lsp)
+         (rust-ts-mode . lsp-mode)
+         (lsp-mode . (lambda ()
+                       (add-hook 'before-save-hook 'lsp-format-buffer nil t))))
+  :commands lsp
+  :config (setq lsp-ui-sideline-enable nil
+                lsp-use-plists t
+                lsp-idle-delay 0.500
+                lsp-modeline-code-actions-enable nil
+                lsp-auto-configure t
+                lsp-keymap-prefix "s-l"
+                lsp-headerline-breadcrumb-enable nil
+                lsp-modeline-diagnostics-enable nil))
+
+(use-package company
+  :hook (lsp-mode . company-mode)
+  :config
+  (setq company-idle-delay 0.3
+        company-minimum-prefix-length 1
+        company-tooltip-align-annotations t
+        company-dabbrev-downcase nil))
+
+(defun show-info-at-point ()
+  (interactive)
+  (let ((message (display-local-help)))
+    (if (and message (not (string= message "No local help at point")))
+        (lsp-ui-doc--display "help" message)
+      (lsp-ui-doc-show))))
+
+(use-package lsp-ui
+  :config (setq lsp-ui-doc-enable nil
+                lsp-ui-doc-position 'at-point
+                lsp-ui-flymake-enable t
+                flymake-fringe-indicator-position nil)
+  :bind (("s-." . show-info-at-point)
+         ("s-," . lsp-ui-doc-hide)))
+
+(use-package typescript-mode
+  :hook ((typescript-mode . (lambda ()
+                              (add-hook 'before-save-hook 'lsp-eslint-apply-all-fixes nil t)
+                              (setq-local typescript-indent-level 2
+                                          indent-tabs-mode nil
+                                          tab-width 2)))))
+
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
+
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (with-current-buffer "*scratch*"
+              (erase-buffer))))
 
 (provide 'init)
 
-;; Try and make emacs faster:
-(setq gc-cons-threshold 100000000)
-(setq read-process-output-max (* 1024 1024)) ;; 1mb
-(setq native-comp-async-report-warnings-errors nil)
-
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
- '(custom-enabled-themes '(rebecca))
- '(custom-safe-themes
-   '("21aaea84643951836dbe2c5aec92130bbd034f5d3ab2f116fe782dfb99d886a5" "c9ddf33b383e74dac7690255dd2c3dfa1961a8e8a1d20e401c6572febef61045" "67113d2df72009223d28d093754f613fcdeaa4b469041118972b841309da1d6f" "f633d825e380caaaefca46483f7243ae9a663f6df66c5fad66d4cab91f731c86" default))
- '(fci-rule-color "#778ca3")
- '(nrepl-message-colors
-   '("#00afef" "#778ca3" "#009c9f" "#778ca3" "#005cc5" "#fa1090" "#009c9f" "#778ca3"))
  '(package-selected-packages
-   '(prettier lsp-dart cargo-mode tide typescript-mode pug-mode yaml-mode lsp cider clojure-mode slime company-ctags websocket magit lsp-javacomp lsp-pyls lsp-python-ms lsp-java company-go use-package yasnippet-snippets yasnippet yasnippit company-racer lsp-ui lsp-mode racer vagrant vagrant-tramp zoom fzf rainbow-mode web-mode rebecca-theme rainbow-delimiters prettier-js golden-ratio go-mode flycheck-rust exec-path-from-shell deferred cmake-mode cargo ample-theme add-node-modules-path))
- '(pdf-view-midnight-colors '("#778ca3" . "#eaeafa"))
- '(safe-local-variable-values '((MODE1350 . C++)))
- '(send-mail-function 'mailclient-send-it)
- '(vc-annotate-background "#04c4c7")
- '(vc-annotate-color-map
-   '((20 . "#778ca3")
-     (40 . "#00afef")
-     (60 . "#778ca3")
-     (80 . "#778ca3")
-     (100 . "#778ca3")
-     (120 . "#009c9f")
-     (140 . "#778ca3")
-     (160 . "#778ca3")
-     (180 . "#778ca3")
-     (200 . "#778ca3")
-     (220 . "#009c9f")
-     (240 . "#005cc5")
-     (260 . "#fa1090")
-     (280 . "#778ca3")
-     (300 . "#005cc5")
-     (320 . "#778ca3")
-     (340 . "#009c9f")
-     (360 . "#778ca3")))
- '(vc-annotate-very-old-color "#778ca3")
- '(zoom-size '(0.412 . 0.618)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(trailing-whitespace ((t (:background "VioletRed3")))))
+   '(typescript-mode lsp-ui company)))
+(custom-set-faces)
